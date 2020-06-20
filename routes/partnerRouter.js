@@ -1,15 +1,12 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const Partner = require('../models/partner');
 const authenticate = require('../authenticate');
 const cors = require('./cors');
 
 const partnerRouter = express.Router();
 
-partnerRouter.use(bodyParser.json());
-
 partnerRouter.route('/')
-.options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.cors, (req, res, next) => {
     Partner.find()
     .then(partners => {
@@ -29,7 +26,7 @@ partnerRouter.route('/')
     })
     .catch(err => next(err));
 })
-.put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin,  (req, res) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res) => {
     res.statusCode = 403;
     res.end('PUT operation not supported on /partners');
 })
@@ -44,7 +41,7 @@ partnerRouter.route('/')
 });
 
 partnerRouter.route('/:partnerId')
-.options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.cors, (req, res, next) => {
     Partner.findById(req.params.partnerId)
     .then(partner => {
